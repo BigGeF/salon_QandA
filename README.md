@@ -8,7 +8,7 @@ Simple AI chat application for university assignment.
 - `index.html` - Frontend interface  
 - `start.py` - Startup script
 
-## Setup
+## Setupte
 1. Get OpenAI API key
 2. Create `.env` file: `OPENAI_API_KEY=your_key`
 3. Install: `pip install fastapi uvicorn openai python-dotenv`
