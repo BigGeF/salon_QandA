@@ -24,7 +24,7 @@
         .chat-container {
             width: 100%;
             max-width: 800px;
-            height: 80vh;
+            height: 85vh;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -48,6 +48,97 @@
         .chat-header p {
             opacity: 0.9;
             font-size: 14px;
+        }
+
+        /* URL Input Section */
+        .url-section {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .url-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 15px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .url-input:focus {
+            border-color: #667eea;
+        }
+
+        .url-input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .scrape-button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        .scrape-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+
+        .scrape-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .url-status {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        .status-indicator.success {
+            background: #28a745;
+        }
+
+        .status-indicator.loading {
+            background: #ffc107;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-indicator.error {
+            background: #dc3545;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .chat-messages {
@@ -85,6 +176,10 @@
             justify-content: center;
         }
 
+        .message.system {
+            justify-content: center;
+        }
+
         .message-content {
             max-width: 70%;
             padding: 12px 16px;
@@ -110,6 +205,14 @@
             color: #c33;
             border: 1px solid #fcc;
             text-align: center;
+        }
+
+        .message.system .message-content {
+            background: #e8f5e8;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+            max-width: 90%;
         }
 
         .message-label {
@@ -218,6 +321,19 @@
             .chat-input {
                 padding: 15px;
             }
+
+            .url-section {
+                padding: 10px 15px;
+            }
+
+            .url-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .url-input {
+                width: 100%;
+            }
         }
 
         .chat-messages::-webkit-scrollbar {
@@ -242,14 +358,32 @@
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <h1>🤖 AI Chat Assistant</h1>
-            <p>Intelligent conversation with AI</p>
+            <h1>🤖 AI Beauty Salon Assistant</h1>
+            <p>Intelligent conversation with website knowledge</p>
+        </div>
+        
+        <!-- URL Input Section -->
+        <div class="url-section">
+            <div class="url-container">
+                <input 
+                    type="url" 
+                    id="urlInput" 
+                    class="url-input" 
+                    placeholder="Enter beauty salon website URL (e.g., https://example-salon.com)"
+                >
+                <button id="scrapeButton" class="scrape-button">📖 Learn Website</button>
+            </div>
+            <div class="url-status" id="urlStatus">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">Ready to learn from a website</span>
+            </div>
         </div>
         
         <div class="chat-messages" id="chatMessages">
             <div class="welcome-message">
-                <h3>👋 Welcome to AI Chat Assistant!</h3>
-                <p>You can ask me any questions, and I'll do my best to help you.</p>
+                <h3>👋 Welcome to AI Beauty Salon Assistant!</h3>
+                <p>First, enter a beauty salon website URL above so I can learn about their services.</p>
+                <p>Then ask me questions about the salon's treatments, prices, or booking information!</p>
             </div>
         </div>
         
@@ -257,7 +391,7 @@
             <div class="input-container">
                 <textarea
                     id="messageInput"
-                    placeholder="Type your question..."
+                    placeholder="Ask about salon services, prices, or booking..."
                     rows="1"
                 ></textarea>
                 <button id="sendButton" class="send-button">Send</button>
@@ -269,7 +403,14 @@
         const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
+        const urlInput = document.getElementById('urlInput');
+        const scrapeButton = document.getElementById('scrapeButton');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        
         let isLoading = false;
+        let isScraping = false;
+        let websiteData = null;
 
         function addMessage(type, content) {
             const messageDiv = document.createElement('div');
@@ -280,7 +421,9 @@
             
             const label = document.createElement('span');
             label.className = 'message-label';
-            label.textContent = type === 'user' ? 'You: ' : type === 'ai' ? 'AI: ' : 'Error: ';
+            label.textContent = type === 'user' ? 'You: ' : 
+                              type === 'ai' ? 'AI: ' : 
+                              type === 'system' ? 'System: ' : 'Error: ';
             
             const text = document.createElement('span');
             text.className = 'message-text';
@@ -292,6 +435,11 @@
             
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function updateStatus(status, text) {
+            statusIndicator.className = `status-indicator ${status}`;
+            statusText.textContent = text;
         }
 
         function showTyping() {
@@ -325,6 +473,54 @@
             }
         }
 
+        async function scrapeWebsite() {
+            const url = urlInput.value.trim();
+            if (!url || isScraping) return;
+
+            // Basic URL validation
+            try {
+                new URL(url);
+            } catch (e) {
+                addMessage('error', 'Please enter a valid URL');
+                return;
+            }
+
+            isScraping = true;
+            scrapeButton.disabled = true;
+            scrapeButton.textContent = '📖 Learning...';
+            urlInput.disabled = true;
+            updateStatus('loading', 'Reading website content...');
+
+            try {
+                const response = await fetch('http://localhost:8000/scrape-website', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: url }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to scrape website');
+                }
+
+                const data = await response.json();
+                websiteData = data;
+                
+                updateStatus('success', `Learned from ${data.pages_scraped} pages`);
+                addMessage('system', `✅ Successfully learned from ${url}! Found ${data.pages_scraped} pages with ${data.total_content_length} characters of content. You can now ask me questions about this salon!`);
+                
+            } catch (error) {
+                updateStatus('error', 'Failed to read website');
+                addMessage('error', 'Failed to read website: ' + error.message);
+            } finally {
+                isScraping = false;
+                scrapeButton.disabled = false;
+                scrapeButton.textContent = '📖 Learn Website';
+                urlInput.disabled = false;
+            }
+        }
+
         async function sendMessage() {
             const message = messageInput.value.trim();
             if (!message || isLoading) return;
@@ -341,12 +537,12 @@
             showTyping();
 
             try {
-                const response = await fetch('http://localhost:8000/chat', {
+                const response = await fetch('http://localhost:8000/ask-question', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message: message }),
+                    body: JSON.stringify({ question: message }),
                 });
 
                 if (!response.ok) {
@@ -355,7 +551,7 @@
 
                 const data = await response.json();
                 hideTyping();
-                addMessage('ai', data.response);
+                addMessage('ai', data.answer);
             } catch (error) {
                 hideTyping();
                 addMessage('error', 'Sorry, an error occurred: ' + error.message);
@@ -369,7 +565,15 @@
         }
 
         // Event listeners
+        scrapeButton.addEventListener('click', scrapeWebsite);
         sendButton.addEventListener('click', sendMessage);
+        
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                scrapeWebsite();
+            }
+        });
         
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -384,9 +588,9 @@
             this.style.height = Math.min(this.scrollHeight, 100) + 'px';
         });
 
-        // Focus input after page load
+        // Focus URL input after page load
         window.addEventListener('load', () => {
-            messageInput.focus();
+            urlInput.focus();
         });
     </script>
 </body>
