@@ -1,0 +1,21 @@
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# AI and ML
+openai==0.28.1
+
+# Web Scraping
+requests==2.31.0
+beautifulsoup4==4.12.2
+aiohttp==3.9.1
+
+# Environment and Configuration
+python-dotenv==1.0.0
+
+# Data Processing
+pydantic==2.5.0
+
+# Development and Testing
+pytest==7.4.3
+httpx==0.25.2 

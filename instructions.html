@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty Salon Q&A System - User Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .instructions-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .instructions-header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .instructions-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .instructions-content {
+            padding: 40px;
+        }
+
+        .instruction-step {
+            display: flex;
+            margin-bottom: 40px;
+            align-items: flex-start;
+            gap: 25px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            margin: 0 0 20px 0;
+            color: #5a6c7d;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .example {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            color: #1565c0;
+            margin: 15px 0;
+            font-size: 1rem;
+        }
+
+        .example-questions {
+            background: #f3e5f5;
+            border-left: 5px solid #9c27b0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .example-questions strong {
+            color: #7b1fa2;
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .example-questions ul {
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        .example-questions li {
+            margin-bottom: 8px;
+            color: #4a148c;
+            font-style: italic;
+            font-size: 1rem;
+        }
+
+        .tips-section {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .tips-section h3 {
+            margin: 0 0 20px 0;
+            color: #e65100;
+            font-size: 1.4rem;
+        }
+
+        .tips-section ul {
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        .tips-section li {
+            margin-bottom: 10px;
+            color: #bf360c;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .access-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .access-link h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .access-link a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 12px 24px;
+            border-radius: 25px;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+
+        .access-link a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .troubleshooting {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .troubleshooting h3 {
+            margin: 0 0 20px 0;
+            color: #c62828;
+            font-size: 1.4rem;
+        }
+
+        .troubleshooting ul {
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        .troubleshooting li {
+            margin-bottom: 10px;
+            color: #b71c1c;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .instruction-step {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .step-number {
+                align-self: flex-start;
+            }
+            
+            .instructions-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📖 Beauty Salon Q&A System</h1>
+            <p>Complete User Guide & Instructions</p>
+        </div>
+
+        <div class="instructions-panel">
+            <div class="instructions-header">
+                <h2>🚀 How to Use This System</h2>
+            </div>
+            
+            <div class="instructions-content">
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>🌐 Enter Website URL</h3>
+                        <p>Start by entering the beauty salon's website URL in the input field. The system will automatically scrape and analyze all the content from the website to build a knowledge base.</p>
+                        <div class="example">
+                            <strong>Example URLs:</strong><br>
+                            https://www.beautysalon.com<br>
+                            https://mysalon.wixsite.com/salon<br>
+                            https://salon.squarespace.com
+                        </div>
+                        <p><strong>Important:</strong> Make sure the URL is complete and the website is publicly accessible. The system works best with websites that have detailed information about services, pricing, and policies.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>⏳ Wait for Processing</h3>
+                        <p>After submitting the URL, the system will:</p>
+                        <ul style="margin: 15px 0; padding-left: 25px;">
+                            <li>Crawl through all pages of the website</li>
+                            <li>Extract text content, service information, and pricing</li>
+                            <li>Process the content using AI to create a searchable knowledge base</li>
+                            <li>Prepare the AI assistant to answer questions</li>
+                        </ul>
+                        <p>This process typically takes 10-30 seconds depending on the website size. You'll see a "Website content successfully scraped!" message when it's complete.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>💬 Ask Questions</h3>
+                        <p>Once processing is complete, you can start asking questions about the salon. The AI assistant will provide detailed answers based on the website content.</p>
+                        <div class="example-questions">
+                            <strong>Try asking these types of questions:</strong>
+                            <ul>
+                                <li>"What services does this salon offer?"</li>
+                                <li>"What are the salon's operating hours?"</li>
+                                <li>"How much does a haircut cost?"</li>
+                                <li>"Where is the salon located?"</li>
+                                <li>"Do they offer online booking?"</li>
+                                <li>"What hair treatments are available?"</li>
+                                <li>"Do they provide nail services?"</li>
+                                <li>"What are their cancellation policies?"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tips-section">
+                    <h3>💡 Tips for Best Results</h3>
+                    <ul>
+                        <li><strong>URL Format:</strong> Always include "http://" or "https://" in the URL</li>
+                        <li><strong>Specific Questions:</strong> Ask detailed questions about services, prices, location, or policies</li>
+                        <li><strong>Multiple Websites:</strong> You can analyze different salon websites by entering new URLs</li>
+                        <li><strong>Information Accuracy:</strong> Answers are based on website content - if information isn't on the site, the AI can't provide it</li>
+                        <li><strong>Follow-up Questions:</strong> Feel free to ask follow-up questions for more details</li>
+                        <li><strong>Language:</strong> The system works best with English websites but can handle other languages</li>
+                    </ul>
+                </div>
+
+                <div class="troubleshooting">
+                    <h3>🔧 Troubleshooting</h3>
+                    <ul>
+                        <li><strong>Processing Failed:</strong> Check if the URL is correct and the website is accessible</li>
+                        <li><strong>No Response:</strong> The website might not have enough content or might be blocking automated access</li>
+                        <li><strong>Incomplete Answers:</strong> The information might not be available on the website</li>
+                        <li><strong>Slow Processing:</strong> Large websites take longer to process - please be patient</li>
+                        <li><strong>Connection Issues:</strong> Make sure both frontend (port 3000) and backend (port 8000) are running</li>
+                    </ul>
+                </div>
+
+                <div class="access-link">
+                    <h3>🔗 Access the System</h3>
+                    <a href="http://localhost:3000" target="_blank">Open Beauty Salon Q&A System</a>
+                    <p style="margin-top: 15px; opacity: 0.9;">Make sure both the frontend and backend services are running before accessing the system.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -199,48 +199,50 @@ dist
 
 # Gatsby files
 .cache/
-public
+# Comment in the public line in if your project uses Gatsby and *not* Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# public
 
-# Storybook build outputs
-.out
-.storybook-out
+# vuepress build output
+.vuepress/dist
 
-# Temporary folders
-tmp/
-temp/
+# Serverless directories
+.serverless/
 
-# Editor directories and files
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Project-specific files
+backend/data/
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Logs
-logs
-*.log
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
 # Backup files
 *.bak
 *.backup
 
+# Log files
+*.log
+logs/
+
 # Temporary files
-*.tmp
-*.temp
+temp/
+tmp/
 
 # API keys and secrets (additional protection)
 **/secrets/
